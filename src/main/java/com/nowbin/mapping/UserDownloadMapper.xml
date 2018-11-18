@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nowbin.dao.UserDownloadMapper">
+  <resultMap id="BaseResultMap" type="com.nowbin.bean.UserDownload">
+    <id column="UDID" jdbcType="INTEGER" property="udid" />
+    <result column="Userid" jdbcType="INTEGER" property="userid" />
+    <result column="DataCount" jdbcType="INTEGER" property="datacount" />
+    <result column="TotalDataSize" jdbcType="INTEGER" property="totaldatasize" />
+    <result column="OrderDatetime" jdbcType="TIMESTAMP" property="orderdatetime" />
+    <result column="Content" jdbcType="VARCHAR" property="content" />
+    <result column="CheckedStatus" jdbcType="BIT" property="checkedstatus" />
+    <result column="adminID" jdbcType="INTEGER" property="adminid" />
+    <result column="CheckedTime" jdbcType="TIMESTAMP" property="checkedtime" />
+    <result column="ZipStatus" jdbcType="BIT" property="zipstatus" />
+    <result column="ZipCount" jdbcType="INTEGER" property="zipcount" />
+    <result column="ZipSize" jdbcType="VARCHAR" property="zipsize" />
+    <result column="DownloadLinks" jdbcType="VARCHAR" property="downloadlinks" />
+    <result column="DownloadEndTime" jdbcType="TIMESTAMP" property="downloadendtime" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.nowbin.bean.UserDownload">
+    <result column="dataID" jdbcType="LONGVARCHAR" property="dataid" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    UDID, Userid, DataCount, TotalDataSize, OrderDatetime, Content, CheckedStatus, adminID, 
+    CheckedTime, ZipStatus, ZipCount, ZipSize, DownloadLinks, DownloadEndTime
+  </sql>
+  <sql id="Blob_Column_List">
+    dataID
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_userdownload
+    where UDID = #{udid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_userdownload
+    where UDID = #{udid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.nowbin.bean.UserDownload">
+    insert into t_userdownload (UDID, Userid, DataCount, 
+      TotalDataSize, OrderDatetime, Content, 
+      CheckedStatus, adminID, CheckedTime, 
+      ZipStatus, ZipCount, ZipSize, 
+      DownloadLinks, DownloadEndTime, dataID
+      )
+    values (#{udid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{datacount,jdbcType=INTEGER}, 
+      #{totaldatasize,jdbcType=INTEGER}, #{orderdatetime,jdbcType=TIMESTAMP}, #{content,jdbcType=VARCHAR}, 
+      #{checkedstatus,jdbcType=BIT}, #{adminid,jdbcType=INTEGER}, #{checkedtime,jdbcType=TIMESTAMP}, 
+      #{zipstatus,jdbcType=BIT}, #{zipcount,jdbcType=INTEGER}, #{zipsize,jdbcType=VARCHAR}, 
+      #{downloadlinks,jdbcType=VARCHAR}, #{downloadendtime,jdbcType=TIMESTAMP}, #{dataid,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="udid"  parameterType="com.nowbin.bean.UserDownload">
+    insert into t_userdownload
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="udid != null">
+        UDID,
+      </if>
+      <if test="userid != null">
+        Userid,
+      </if>
+      <if test="datacount != null">
+        DataCount,
+      </if>
+      <if test="totaldatasize != null">
+        TotalDataSize,
+      </if>
+      <if test="orderdatetime != null">
+        OrderDatetime,
+      </if>
+      <if test="content != null">
+        Content,
+      </if>
+      <if test="checkedstatus != null">
+        CheckedStatus,
+      </if>
+      <if test="adminid != null">
+        adminID,
+      </if>
+      <if test="checkedtime != null">
+        CheckedTime,
+      </if>
+      <if test="zipstatus != null">
+        ZipStatus,
+      </if>
+      <if test="zipcount != null">
+        ZipCount,
+      </if>
+      <if test="zipsize != null">
+        ZipSize,
+      </if>
+      <if test="downloadlinks != null">
+        DownloadLinks,
+      </if>
+      <if test="downloadendtime != null">
+        DownloadEndTime,
+      </if>
+      <if test="dataid != null">
+        dataID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="udid != null">
+        #{udid,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="datacount != null">
+        #{datacount,jdbcType=INTEGER},
+      </if>
+      <if test="totaldatasize != null">
+        #{totaldatasize,jdbcType=INTEGER},
+      </if>
+      <if test="orderdatetime != null">
+        #{orderdatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="checkedstatus != null">
+        #{checkedstatus,jdbcType=BIT},
+      </if>
+      <if test="adminid != null">
+        #{adminid,jdbcType=INTEGER},
+      </if>
+      <if test="checkedtime != null">
+        #{checkedtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="zipstatus != null">
+        #{zipstatus,jdbcType=BIT},
+      </if>
+      <if test="zipcount != null">
+        #{zipcount,jdbcType=INTEGER},
+      </if>
+      <if test="zipsize != null">
+        #{zipsize,jdbcType=VARCHAR},
+      </if>
+      <if test="downloadlinks != null">
+        #{downloadlinks,jdbcType=VARCHAR},
+      </if>
+      <if test="downloadendtime != null">
+        #{downloadendtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dataid != null">
+        #{dataid,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nowbin.bean.UserDownload">
+    update t_userdownload
+    <set>
+      <if test="userid != null">
+        Userid = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="datacount != null">
+        DataCount = #{datacount,jdbcType=INTEGER},
+      </if>
+      <if test="totaldatasize != null">
+        TotalDataSize = #{totaldatasize,jdbcType=INTEGER},
+      </if>
+      <if test="orderdatetime != null">
+        OrderDatetime = #{orderdatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null">
+        Content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="checkedstatus != null">
+        CheckedStatus = #{checkedstatus,jdbcType=BIT},
+      </if>
+      <if test="adminid != null">
+        adminID = #{adminid,jdbcType=INTEGER},
+      </if>
+      <if test="checkedtime != null">
+        CheckedTime = #{checkedtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="zipstatus != null">
+        ZipStatus = #{zipstatus,jdbcType=BIT},
+      </if>
+      <if test="zipcount != null">
+        ZipCount = #{zipcount,jdbcType=INTEGER},
+      </if>
+      <if test="zipsize != null">
+        ZipSize = #{zipsize,jdbcType=VARCHAR},
+      </if>
+      <if test="downloadlinks != null">
+        DownloadLinks = #{downloadlinks,jdbcType=VARCHAR},
+      </if>
+      <if test="downloadendtime != null">
+        DownloadEndTime = #{downloadendtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dataid != null">
+        dataID = #{dataid,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where UDID = #{udid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.nowbin.bean.UserDownload">
+    update t_userdownload
+    set Userid = #{userid,jdbcType=INTEGER},
+      DataCount = #{datacount,jdbcType=INTEGER},
+      TotalDataSize = #{totaldatasize,jdbcType=INTEGER},
+      OrderDatetime = #{orderdatetime,jdbcType=TIMESTAMP},
+      Content = #{content,jdbcType=VARCHAR},
+      CheckedStatus = #{checkedstatus,jdbcType=BIT},
+      adminID = #{adminid,jdbcType=INTEGER},
+      CheckedTime = #{checkedtime,jdbcType=TIMESTAMP},
+      ZipStatus = #{zipstatus,jdbcType=BIT},
+      ZipCount = #{zipcount,jdbcType=INTEGER},
+      ZipSize = #{zipsize,jdbcType=VARCHAR},
+      DownloadLinks = #{downloadlinks,jdbcType=VARCHAR},
+      DownloadEndTime = #{downloadendtime,jdbcType=TIMESTAMP},
+      dataID = #{dataid,jdbcType=LONGVARCHAR}
+    where UDID = #{udid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nowbin.bean.UserDownload">
+    update t_userdownload
+    set Userid = #{userid,jdbcType=INTEGER},
+      DataCount = #{datacount,jdbcType=INTEGER},
+      TotalDataSize = #{totaldatasize,jdbcType=INTEGER},
+      OrderDatetime = #{orderdatetime,jdbcType=TIMESTAMP},
+      Content = #{content,jdbcType=VARCHAR},
+      CheckedStatus = #{checkedstatus,jdbcType=BIT},
+      adminID = #{adminid,jdbcType=INTEGER},
+      CheckedTime = #{checkedtime,jdbcType=TIMESTAMP},
+      ZipStatus = #{zipstatus,jdbcType=BIT},
+      ZipCount = #{zipcount,jdbcType=INTEGER},
+      ZipSize = #{zipsize,jdbcType=VARCHAR},
+      DownloadLinks = #{downloadlinks,jdbcType=VARCHAR},
+      DownloadEndTime = #{downloadendtime,jdbcType=TIMESTAMP}
+    where UDID = #{udid,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 以下为自定义sql语句 -->
+  <select id="getCount" parameterType="java.util.Map" resultType="long">
+    select count(*)
+    from t_userdownload
+    where 1=1
+    <if test="userid != null">
+       and Userid = #{userid,jdbcType=INTEGER} 
+    </if>
+  </select>  
+  <select id="queryData" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_userdownload
+    where 1=1
+    <if test="userid != null">
+       and Userid = #{userid,jdbcType=INTEGER} 
+    </if>
+    <if test="zipstatus != null">
+       and ZipStatus = #{zipstatus,jdbcType=BIT} 
+    </if>
+    <if test="expiredate != null">
+       and DownloadEndTime <![CDATA[ < ]]> #{expiredate,jdbcType=TIMESTAMP} 
+    </if>
+    order by UDID DESC
+    <if test="page != null">
+    	limit #{page.startPos,jdbcType=INTEGER},#{page.pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+  <resultMap extends="ResultMapWithBLOBs" id="ResultMapView" type="com.nowbin.bean.UserDownloadView">
+    <association property="applyuser" column="Userid" select="getUser" />
+    <association property="checkuser" column="adminID" select="getAdmin2" />
+  </resultMap>
+  <select id="queryDataView" parameterType="java.util.Map"  resultMap="ResultMapView">
+    select *
+    from t_userdownload
+    where 1=1
+    order by UDID DESC
+    <if test="page != null">
+    	limit #{page.startPos,jdbcType=INTEGER},#{page.pageSize,jdbcType=INTEGER}
+    </if>
+  </select>  
+  <select id="getUser" resultType="com.nowbin.bean.User">
+    select *
+    from t_user
+    where Userid = #{Userid,jdbcType=INTEGER}
+  </select>
+  <select id="getAdmin2" resultType="com.nowbin.bean.Admin">
+    select *
+    from t_admin
+    where admin_id = #{adminID,jdbcType=INTEGER}
+  </select>
+</mapper>

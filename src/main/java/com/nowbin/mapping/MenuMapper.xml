@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nowbin.dao.MenuMapper">
+  <resultMap id="BaseResultMap" type="com.nowbin.bean.Menu">
+    <id column="MenuId" jdbcType="INTEGER" property="menuid" />
+    <result column="MenuTitle" jdbcType="VARCHAR" property="menutitle" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.nowbin.bean.Menu">
+    <result column="MenuContent" jdbcType="LONGVARCHAR" property="menucontent" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    MenuId, MenuTitle
+  </sql>
+  <sql id="Blob_Column_List">
+    MenuContent
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_menu
+    where MenuId = #{menuid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_menu
+    where MenuId = #{menuid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.nowbin.bean.Menu">
+    insert into t_menu (MenuId, MenuTitle, MenuContent
+      )
+    values (#{menuid,jdbcType=INTEGER}, #{menutitle,jdbcType=VARCHAR}, #{menucontent,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.nowbin.bean.Menu">
+    insert into t_menu
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="menuid != null">
+        MenuId,
+      </if>
+      <if test="menutitle != null">
+        MenuTitle,
+      </if>
+      <if test="menucontent != null">
+        MenuContent,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="menuid != null">
+        #{menuid,jdbcType=INTEGER},
+      </if>
+      <if test="menutitle != null">
+        #{menutitle,jdbcType=VARCHAR},
+      </if>
+      <if test="menucontent != null">
+        #{menucontent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nowbin.bean.Menu">
+    update t_menu
+    <set>
+      <if test="menutitle != null">
+        MenuTitle = #{menutitle,jdbcType=VARCHAR},
+      </if>
+      <if test="menucontent != null">
+        MenuContent = #{menucontent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where MenuId = #{menuid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.nowbin.bean.Menu">
+    update t_menu
+    set MenuTitle = #{menutitle,jdbcType=VARCHAR},
+      MenuContent = #{menucontent,jdbcType=LONGVARCHAR}
+    where MenuId = #{menuid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nowbin.bean.Menu">
+    update t_menu
+    set MenuTitle = #{menutitle,jdbcType=VARCHAR}
+    where MenuId = #{menuid,jdbcType=INTEGER}
+  </update>
+  
+  
+</mapper>

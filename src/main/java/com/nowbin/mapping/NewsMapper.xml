@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nowbin.dao.NewsMapper">
+  <resultMap id="BaseResultMap" type="com.nowbin.bean.News">
+    <id column="NewsId" jdbcType="INTEGER" property="newsid" />
+    <result column="Author" jdbcType="VARCHAR" property="author" />
+    <result column="NewsTitle" jdbcType="VARCHAR" property="newstitle" />
+    <result column="updatetime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="NewsStatus" jdbcType="INTEGER" property="newsstatus" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.nowbin.bean.NewsWithBLOBs">    
+    <result column="NewsContent" jdbcType="LONGVARCHAR" property="newscontent" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    NewsId, Author, updatetime, NewsStatus, NewsTitle
+  </sql>
+  <sql id="Blob_Column_List">
+     NewsContent
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_news
+    where NewsId = #{newsid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_news
+    where NewsId = #{newsid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.nowbin.bean.NewsWithBLOBs">
+    insert into t_news (NewsId, Author, updatetime, 
+      NewsStatus, NewsTitle, NewsContent
+      )
+    values (#{newsid,jdbcType=INTEGER}, #{author,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}, 
+      #{newsstatus,jdbcType=INTEGER}, #{newstitle,jdbcType=LONGVARCHAR}, #{newscontent,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.nowbin.bean.NewsWithBLOBs">
+    insert into t_news
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="newsid != null">
+        NewsId,
+      </if>
+      <if test="author != null">
+        Author,
+      </if>
+      <if test="updatetime != null">
+        updatetime,
+      </if>
+      <if test="newsstatus != null">
+        NewsStatus,
+      </if>
+      <if test="newstitle != null">
+        NewsTitle,
+      </if>
+      <if test="newscontent != null">
+        NewsContent,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="newsid != null">
+        #{newsid,jdbcType=INTEGER},
+      </if>
+      <if test="author != null">
+        #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="newsstatus != null">
+        #{newsstatus,jdbcType=INTEGER},
+      </if>
+      <if test="newstitle != null">
+        #{newstitle,jdbcType=VARCHAR},
+      </if>
+      <if test="newscontent != null">
+        #{newscontent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nowbin.bean.NewsWithBLOBs">
+    update t_news
+    <set>
+      <if test="author != null">
+        Author = #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="newsstatus != null">
+        NewsStatus = #{newsstatus,jdbcType=INTEGER},
+      </if>
+      <if test="newstitle != null">
+        NewsTitle = #{newstitle,jdbcType=VARCHAR},
+      </if>
+      <if test="newscontent != null">
+        NewsContent = #{newscontent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where NewsId = #{newsid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.nowbin.bean.NewsWithBLOBs">
+    update t_news
+    set Author = #{author,jdbcType=VARCHAR},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      NewsStatus = #{newsstatus,jdbcType=INTEGER},
+      NewsTitle = #{newstitle,jdbcType=VARCHAR},
+      NewsContent = #{newscontent,jdbcType=LONGVARCHAR}
+    where NewsId = #{newsid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nowbin.bean.News">
+    update t_news
+    set Author = #{author,jdbcType=VARCHAR},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      NewsTitle = #{newstitle,jdbcType=VARCHAR},
+      NewsStatus = #{newsstatus,jdbcType=INTEGER}
+    where NewsId = #{newsid,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 以下为自定义sql语句 -->
+  <select id="getCount" parameterType="java.util.Map" resultType="long">
+    select count(*)
+    from t_news
+    where 1=1
+    <if test="newsstatus != null">
+       and NewsStatus = #{newsstatus,jdbcType=INTEGER} 
+    </if> 
+  </select>  
+  <select id="queryData" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_news
+    where 1=1
+    <if test="newsstatus != null">
+       and NewsStatus = #{newsstatus,jdbcType=INTEGER} 
+    </if>
+    order by updatetime DESC
+    <if test="page != null">
+    	limit #{page.startPos,jdbcType=INTEGER},#{page.pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+</mapper>

@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nowbin.dao.DataTypeMapper">
+  <resultMap id="BaseResultMap" type="com.nowbin.bean.DataType">
+    <id column="DTID" jdbcType="INTEGER" property="dtid" />
+    <result column="DTName" jdbcType="VARCHAR" property="dtname" />
+    <result column="DTFather" jdbcType="VARCHAR" property="dtfather" />
+    <result column="RemotePath" jdbcType="VARCHAR" property="remotepath" />
+    <result column="DTLocalPath" jdbcType="VARCHAR" property="dtlocalpath" />
+    <result column="DTPath" jdbcType="VARCHAR" property="dtpath" />
+    <result column="DTContent" jdbcType="VARCHAR" property="dtcontent" />
+    <result column="DTStatus" jdbcType="INTEGER" property="dtstatus" />
+    <result column="IsSN" jdbcType="INTEGER" property="issn" />
+    <result column="MaskKeywords" jdbcType="VARCHAR" property="maskkeywords" />
+    <result column="MaskKeywords1" jdbcType="VARCHAR" property="maskkeywords1" />
+    <result column="RemoteFilesCount" jdbcType="INTEGER" property="remotefilescount" />
+    <result column="DownloadFilesCount" jdbcType="INTEGER" property="downloadfilescount" />
+    <result column="FinishedFilesCount" jdbcType="INTEGER" property="finishedfilescount" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    DTID, DTName, DTFather, RemotePath, DTLocalPath, DTPath, DTContent, DTStatus, IsSN, 
+    MaskKeywords, MaskKeywords1, RemoteFilesCount, DownloadFilesCount, FinishedFilesCount
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_datatype
+    where DTID = #{dtid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_datatype
+    where DTID = #{dtid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.nowbin.bean.DataType">
+    insert into t_datatype (DTID, DTName, DTFather, 
+      RemotePath, DTLocalPath, DTPath, 
+      DTContent, DTStatus, IsSN, 
+      MaskKeywords, MaskKeywords1, RemoteFilesCount, 
+      DownloadFilesCount, FinishedFilesCount)
+    values (#{dtid,jdbcType=INTEGER}, #{dtname,jdbcType=VARCHAR}, #{dtfather,jdbcType=VARCHAR}, 
+      #{remotepath,jdbcType=VARCHAR}, #{dtlocalpath,jdbcType=VARCHAR}, #{dtpath,jdbcType=VARCHAR}, 
+      #{dtcontent,jdbcType=VARCHAR}, #{dtstatus,jdbcType=INTEGER}, #{issn,jdbcType=INTEGER}, 
+      #{maskkeywords,jdbcType=VARCHAR}, #{maskkeywords1,jdbcType=VARCHAR}, #{remotefilescount,jdbcType=INTEGER}, 
+      #{downloadfilescount,jdbcType=INTEGER}, #{finishedfilescount,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.nowbin.bean.DataType">
+    insert into t_datatype
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="dtid != null">
+        DTID,
+      </if>
+      <if test="dtname != null">
+        DTName,
+      </if>
+      <if test="dtfather != null">
+        DTFather,
+      </if>
+      <if test="remotepath != null">
+        RemotePath,
+      </if>
+      <if test="dtlocalpath != null">
+        DTLocalPath,
+      </if>
+      <if test="dtpath != null">
+        DTPath,
+      </if>
+      <if test="dtcontent != null">
+        DTContent,
+      </if>
+      <if test="dtstatus != null">
+        DTStatus,
+      </if>
+      <if test="issn != null">
+        IsSN,
+      </if>
+      <if test="maskkeywords != null">
+        MaskKeywords,
+      </if>
+      <if test="maskkeywords1 != null">
+        MaskKeywords1,
+      </if>
+      <if test="remotefilescount != null">
+        RemoteFilesCount,
+      </if>
+      <if test="downloadfilescount != null">
+        DownloadFilesCount,
+      </if>
+      <if test="finishedfilescount != null">
+        FinishedFilesCount,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="dtid != null">
+        #{dtid,jdbcType=INTEGER},
+      </if>
+      <if test="dtname != null">
+        #{dtname,jdbcType=VARCHAR},
+      </if>
+      <if test="dtfather != null">
+        #{dtfather,jdbcType=VARCHAR},
+      </if>
+      <if test="remotepath != null">
+        #{remotepath,jdbcType=VARCHAR},
+      </if>
+      <if test="dtlocalpath != null">
+        #{dtlocalpath,jdbcType=VARCHAR},
+      </if>
+      <if test="dtpath != null">
+        #{dtpath,jdbcType=VARCHAR},
+      </if>
+      <if test="dtcontent != null">
+        #{dtcontent,jdbcType=VARCHAR},
+      </if>
+      <if test="dtstatus != null">
+        #{dtstatus,jdbcType=INTEGER},
+      </if>
+      <if test="issn != null">
+        #{issn,jdbcType=INTEGER},
+      </if>
+      <if test="maskkeywords != null">
+        #{maskkeywords,jdbcType=VARCHAR},
+      </if>
+      <if test="maskkeywords1 != null">
+        #{maskkeywords1,jdbcType=VARCHAR},
+      </if>
+      <if test="remotefilescount != null">
+        #{remotefilescount,jdbcType=INTEGER},
+      </if>
+      <if test="downloadfilescount != null">
+        #{downloadfilescount,jdbcType=INTEGER},
+      </if>
+      <if test="finishedfilescount != null">
+        #{finishedfilescount,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nowbin.bean.DataType">
+    update t_datatype
+    <set>
+      <if test="dtname != null">
+        DTName = #{dtname,jdbcType=VARCHAR},
+      </if>
+      <if test="dtfather != null">
+        DTFather = #{dtfather,jdbcType=VARCHAR},
+      </if>
+      <if test="remotepath != null">
+        RemotePath = #{remotepath,jdbcType=VARCHAR},
+      </if>
+      <if test="dtlocalpath != null">
+        DTLocalPath = #{dtlocalpath,jdbcType=VARCHAR},
+      </if>
+      <if test="dtpath != null">
+        DTPath = #{dtpath,jdbcType=VARCHAR},
+      </if>
+      <if test="dtcontent != null">
+        DTContent = #{dtcontent,jdbcType=VARCHAR},
+      </if>
+      <if test="dtstatus != null">
+        DTStatus = #{dtstatus,jdbcType=INTEGER},
+      </if>
+      <if test="issn != null">
+        IsSN = #{issn,jdbcType=INTEGER},
+      </if>
+      <if test="maskkeywords != null">
+        MaskKeywords = #{maskkeywords,jdbcType=VARCHAR},
+      </if>
+      <if test="maskkeywords1 != null">
+        MaskKeywords1 = #{maskkeywords1,jdbcType=VARCHAR},
+      </if>
+      <if test="remotefilescount != null">
+        RemoteFilesCount = #{remotefilescount,jdbcType=INTEGER},
+      </if>
+      <if test="downloadfilescount != null">
+        DownloadFilesCount = #{downloadfilescount,jdbcType=INTEGER},
+      </if>
+      <if test="finishedfilescount != null">
+        FinishedFilesCount = #{finishedfilescount,jdbcType=INTEGER},
+      </if>
+    </set>
+    where DTID = #{dtid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nowbin.bean.DataType">
+    update t_datatype
+    set DTName = #{dtname,jdbcType=VARCHAR},
+      DTFather = #{dtfather,jdbcType=VARCHAR},
+      RemotePath = #{remotepath,jdbcType=VARCHAR},
+      DTLocalPath = #{dtlocalpath,jdbcType=VARCHAR},
+      DTPath = #{dtpath,jdbcType=VARCHAR},
+      DTContent = #{dtcontent,jdbcType=VARCHAR},
+      DTStatus = #{dtstatus,jdbcType=INTEGER},
+      IsSN = #{issn,jdbcType=INTEGER},
+      MaskKeywords = #{maskkeywords,jdbcType=VARCHAR},
+      MaskKeywords1 = #{maskkeywords1,jdbcType=VARCHAR},
+      RemoteFilesCount = #{remotefilescount,jdbcType=INTEGER},
+      DownloadFilesCount = #{downloadfilescount,jdbcType=INTEGER},
+      FinishedFilesCount = #{finishedfilescount,jdbcType=INTEGER}
+    where DTID = #{dtid,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 以下为自定义sql语句 -->
+  <select id="getCount" parameterType="java.util.Map" resultType="long">
+    select count(*)
+    from t_datatype
+    where 1=1
+    <if test="issn != null">
+       and IsSN = #{issn,jdbcType=INTEGER} 
+    </if>
+    <if test="dtfather != null">
+       and DTFather = #{dtfather,jdbcType=VARCHAR} 
+    </if>
+    <if test="dtstatus != null">
+       and DTStatus = #{dtstatus,jdbcType=INTEGER} 
+    </if>
+  </select>  
+  <select id="queryData" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_datatype
+    where 1=1
+    <if test="issn != null">
+       and IsSN = #{issn,jdbcType=INTEGER} 
+    </if>
+    <if test="dtfather != null">
+       and DTFather = #{dtfather,jdbcType=VARCHAR} 
+    </if>
+    <if test="dtstatus != null">
+       and DTStatus = #{dtstatus,jdbcType=INTEGER} 
+    </if>
+    order by DTID ASC
+    <if test="page != null">
+    	limit #{page.startPos,jdbcType=INTEGER},#{page.pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+</mapper>

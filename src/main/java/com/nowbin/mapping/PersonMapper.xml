@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nowbin.dao.PersonMapper">
+  <resultMap id="BaseResultMap" type="com.nowbin.bean.Person">
+    <id column="pid" jdbcType="INTEGER" property="pid" />
+    <result column="pName" jdbcType="VARCHAR" property="pname" />
+    <result column="pTitle" jdbcType="VARCHAR" property="ptitle" />
+    <result column="updatetime" jdbcType="TIMESTAMP" property="updatetime" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.nowbin.bean.Person">
+    <result column="pContent" jdbcType="LONGVARCHAR" property="pcontent" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    pid, pName, pTitle, updatetime
+  </sql>
+  <sql id="Blob_Column_List">
+    pContent
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_person
+    where pid = #{pid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_person
+    where pid = #{pid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.nowbin.bean.Person">
+    insert into t_person (pid, pName, pTitle, 
+      updatetime, pContent)
+    values (#{pid,jdbcType=INTEGER}, #{pname,jdbcType=VARCHAR}, #{ptitle,jdbcType=VARCHAR}, 
+      #{updatetime,jdbcType=TIMESTAMP}, #{pcontent,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.nowbin.bean.Person">
+    insert into t_person
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pid != null">
+        pid,
+      </if>
+      <if test="pname != null">
+        pName,
+      </if>
+      <if test="ptitle != null">
+        pTitle,
+      </if>
+      <if test="updatetime != null">
+        updatetime,
+      </if>
+      <if test="pcontent != null">
+        pContent,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pid != null">
+        #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="pname != null">
+        #{pname,jdbcType=VARCHAR},
+      </if>
+      <if test="ptitle != null">
+        #{ptitle,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pcontent != null">
+        #{pcontent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nowbin.bean.Person">
+    update t_person
+    <set>
+      <if test="pname != null">
+        pName = #{pname,jdbcType=VARCHAR},
+      </if>
+      <if test="ptitle != null">
+        pTitle = #{ptitle,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pcontent != null">
+        pContent = #{pcontent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where pid = #{pid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.nowbin.bean.Person">
+    update t_person
+    set pName = #{pname,jdbcType=VARCHAR},
+      pTitle = #{ptitle,jdbcType=VARCHAR},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      pContent = #{pcontent,jdbcType=LONGVARCHAR}
+    where pid = #{pid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nowbin.bean.Person">
+    update t_person
+    set pName = #{pname,jdbcType=VARCHAR},
+      pTitle = #{ptitle,jdbcType=VARCHAR},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP}
+    where pid = #{pid,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 以下为自定义sql语句 -->
+  <select id="getCount" parameterType="java.util.Map" resultType="long">
+    select count(*)
+    from t_person
+    where 1=1
+  </select>  
+  <select id="queryData" parameterType="java.util.Map" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_person
+    where 1=1    
+    order by pid ASC
+    <if test="page != null">
+    	limit #{page.startPos,jdbcType=INTEGER},#{page.pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+</mapper>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nowbin.dao.LogMapper">
+  <resultMap id="BaseResultMap" type="com.nowbin.bean.Log">
+    <id column="LogId" jdbcType="INTEGER" property="logid" />
+    <result column="LogType" jdbcType="INTEGER" property="logtype" />
+    <result column="LogTime" jdbcType="TIMESTAMP" property="logtime" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.nowbin.bean.Log">
+    <result column="LogContent" jdbcType="LONGVARCHAR" property="logcontent" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    LogId, LogType, LogTime
+  </sql>
+  <sql id="Blob_Column_List">
+    LogContent
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_log
+    where LogId = #{logid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_log
+    where LogId = #{logid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.nowbin.bean.Log">
+    insert into t_log (LogId, LogType, LogTime, 
+      LogContent)
+    values (#{logid,jdbcType=INTEGER}, #{logtype,jdbcType=INTEGER}, #{logtime,jdbcType=TIMESTAMP}, 
+      #{logcontent,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.nowbin.bean.Log">
+    insert into t_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="logid != null">
+        LogId,
+      </if>
+      <if test="logtype != null">
+        LogType,
+      </if>
+      <if test="logtime != null">
+        LogTime,
+      </if>
+      <if test="logcontent != null">
+        LogContent,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="logid != null">
+        #{logid,jdbcType=INTEGER},
+      </if>
+      <if test="logtype != null">
+        #{logtype,jdbcType=INTEGER},
+      </if>
+      <if test="logtime != null">
+        #{logtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="logcontent != null">
+        #{logcontent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nowbin.bean.Log">
+    update t_log
+    <set>
+      <if test="logtype != null">
+        LogType = #{logtype,jdbcType=INTEGER},
+      </if>
+      <if test="logtime != null">
+        LogTime = #{logtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="logcontent != null">
+        LogContent = #{logcontent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where LogId = #{logid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.nowbin.bean.Log">
+    update t_log
+    set LogType = #{logtype,jdbcType=INTEGER},
+      LogTime = #{logtime,jdbcType=TIMESTAMP},
+      LogContent = #{logcontent,jdbcType=LONGVARCHAR}
+    where LogId = #{logid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nowbin.bean.Log">
+    update t_log
+    set LogType = #{logtype,jdbcType=INTEGER},
+      LogTime = #{logtime,jdbcType=TIMESTAMP}
+    where LogId = #{logid,jdbcType=INTEGER}
+  </update>
+  <!-- 以下为自定义sql语句 -->
+  <select id="getCount" parameterType="java.util.Map" resultType="long">
+    select count(*)
+    from t_log
+    where 1=1
+    <if test="mintype != null">
+       and LogType > #{mintype,jdbcType=INTEGER} 
+    </if>
+  </select>  
+  <select id="queryData" parameterType="java.util.Map" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_log
+    where 1=1
+    <if test="mintype != null">
+       and LogType > #{mintype,jdbcType=INTEGER} 
+    </if>
+    order by LogId DESC    
+    <if test="page != null">
+    	limit #{page.startPos,jdbcType=INTEGER},#{page.pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+</mapper>

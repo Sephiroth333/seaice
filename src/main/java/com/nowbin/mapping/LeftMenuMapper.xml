@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nowbin.dao.LeftMenuMapper">
+  <resultMap id="BaseResultMap" type="com.nowbin.bean.LeftMenu">
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="DTFatherID" jdbcType="INTEGER" property="dtfatherid" />
+    <result column="DTNameFather" jdbcType="VARCHAR" property="dtnamefather" />
+    <result column="DTNameSon" jdbcType="VARCHAR" property="dtnameson" />
+    <result column="DTUrl" jdbcType="VARCHAR" property="dturl" />
+    <result column="DTType" jdbcType="INTEGER" property="dttype" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, DTFatherID, DTNameFather, DTNameSon, DTUrl, DTType
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_left
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_left
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.nowbin.bean.LeftMenu">
+    insert into t_left (ID, DTFatherID, DTNameFather, 
+      DTNameSon, DTUrl, DTType
+      )
+    values (#{id,jdbcType=INTEGER}, #{dtfatherid,jdbcType=INTEGER}, #{dtnamefather,jdbcType=VARCHAR}, 
+      #{dtnameson,jdbcType=VARCHAR}, #{dturl,jdbcType=VARCHAR}, #{dttype,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.nowbin.bean.LeftMenu">
+    insert into t_left
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="dtfatherid != null">
+        DTFatherID,
+      </if>
+      <if test="dtnamefather != null">
+        DTNameFather,
+      </if>
+      <if test="dtnameson != null">
+        DTNameSon,
+      </if>
+      <if test="dturl != null">
+        DTUrl,
+      </if>
+      <if test="dttype != null">
+        DTType,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="dtfatherid != null">
+        #{dtfatherid,jdbcType=INTEGER},
+      </if>
+      <if test="dtnamefather != null">
+        #{dtnamefather,jdbcType=VARCHAR},
+      </if>
+      <if test="dtnameson != null">
+        #{dtnameson,jdbcType=VARCHAR},
+      </if>
+      <if test="dturl != null">
+        #{dturl,jdbcType=VARCHAR},
+      </if>
+      <if test="dttype != null">
+        #{dttype,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nowbin.bean.LeftMenu">
+    update t_left
+    <set>
+      <if test="dtfatherid != null">
+        DTFatherID = #{dtfatherid,jdbcType=INTEGER},
+      </if>
+      <if test="dtnamefather != null">
+        DTNameFather = #{dtnamefather,jdbcType=VARCHAR},
+      </if>
+      <if test="dtnameson != null">
+        DTNameSon = #{dtnameson,jdbcType=VARCHAR},
+      </if>
+      <if test="dturl != null">
+        DTUrl = #{dturl,jdbcType=VARCHAR},
+      </if>
+      <if test="dttype != null">
+        DTType = #{dttype,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nowbin.bean.LeftMenu">
+    update t_left
+    set DTFatherID = #{dtfatherid,jdbcType=INTEGER},
+      DTNameFather = #{dtnamefather,jdbcType=VARCHAR},
+      DTNameSon = #{dtnameson,jdbcType=VARCHAR},
+      DTUrl = #{dturl,jdbcType=VARCHAR},
+      DTType = #{dttype,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 以下为自定义sql语句 --> 
+  <select id="queryAllByTabID" parameterType="java.lang.Integer"  resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    <!-- 大于号，小于号和xml解析冲突，需要加CDTAT -->
+    <![CDATA[
+    from t_left
+    where DTFatherID >= #{TabID,jdbcType=INTEGER}*100 and DTFatherID < #{TabID,jdbcType=INTEGER}*100 +100
+    order by DTFatherID,DTType,ID
+    ]]>
+  </select>
+  <select id="queryFatherNameByTabID" parameterType="java.lang.Integer"  resultType="String">
+    select DTNameFather
+    <!-- 大于号，小于号和xml解析冲突，需要加CDTAT -->
+    <![CDATA[
+    from t_left
+    where DTFatherID >= #{TabID,jdbcType=INTEGER}*100 and DTFatherID < #{TabID,jdbcType=INTEGER}*100 +100
+    group by DTNameFather
+    order by DTFatherID,DTType,ID
+    ]]>
+  </select>
+</mapper>

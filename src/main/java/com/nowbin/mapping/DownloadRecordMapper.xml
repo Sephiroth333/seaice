@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nowbin.dao.DownloadRecordMapper">
+  <resultMap id="BaseResultMap" type="com.nowbin.bean.DownloadRecord">
+    <id column="Id" jdbcType="INTEGER" property="id" />
+    <result column="dataid" jdbcType="INTEGER" property="dataid" />
+    <result column="userid" jdbcType="INTEGER" property="userid" />
+    <result column="dltime" jdbcType="TIMESTAMP" property="dltime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    Id, dataid, userid, dltime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_downloadrecord
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_downloadrecord
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.nowbin.bean.DownloadRecord">
+    insert into t_downloadrecord (Id, dataid, userid, 
+      dltime)
+    values (#{id,jdbcType=INTEGER}, #{dataid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, 
+      #{dltime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.nowbin.bean.DownloadRecord">
+    insert into t_downloadrecord
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        Id,
+      </if>
+      <if test="dataid != null">
+        dataid,
+      </if>
+      <if test="userid != null">
+        userid,
+      </if>
+      <if test="dltime != null">
+        dltime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="dataid != null">
+        #{dataid,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="dltime != null">
+        #{dltime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nowbin.bean.DownloadRecord">
+    update t_downloadrecord
+    <set>
+      <if test="dataid != null">
+        dataid = #{dataid,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null">
+        userid = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="dltime != null">
+        dltime = #{dltime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nowbin.bean.DownloadRecord">
+    update t_downloadrecord
+    set dataid = #{dataid,jdbcType=INTEGER},
+      userid = #{userid,jdbcType=INTEGER},
+      dltime = #{dltime,jdbcType=TIMESTAMP}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 以下为自定义sql语句 -->
+  <select id="getCount" parameterType="java.util.Map" resultType="long">
+    select count(*)
+    from t_downloadrecord
+    where 1=1
+    <if test="stime != null">
+       and dltime <![CDATA[ >= ]]>  #{stime,jdbcType=TIMESTAMP} 
+    </if>
+    <if test="etime != null">
+       and dltime <![CDATA[ < ]]> #{etime,jdbcType=TIMESTAMP}
+    </if>
+  </select>
+  <resultMap id="ResultMapDlCountry" type="com.nowbin.bean.DownloadCountry">
+    <id column="countryID" jdbcType="INTEGER" property="countryID" />
+    <result column="countryName" jdbcType="VARCHAR" property="countryName" />
+    <result column="dlCount" jdbcType="INTEGER" property="dlCount" />
+  </resultMap>
+  <select id="queryDownloadCountry" parameterType="java.util.Map" resultMap="ResultMapDlCountry">
+    select c.Id as countryID,c.ENname as countryName,count(a.id) as dlCount
+    from t_downloadrecord as a,t_country as c
+    where 1=1 and a.userid=c.Id
+    group by c.Id
+    order by dlCount DESC
+  </select>
+  <select id="queryData" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_downloadrecord
+    where 1=1
+    <if test="stime != null">
+       and dltime <![CDATA[ >= ]]>  #{stime,jdbcType=TIMESTAMP} 
+    </if>
+    <if test="etime != null">
+       and dltime <![CDATA[ < ]]> #{etime,jdbcType=TIMESTAMP}
+    </if>
+    order by dltime DESC
+    <if test="page != null">
+    	limit #{page.startPos,jdbcType=INTEGER},#{page.pageSize,jdbcType=INTEGER}
+    </if>
+  </select>  
+  <resultMap extends="BaseResultMap" id="ResultMapView" type="com.nowbin.bean.DownloadRecordView">    
+    <association property="dluser" column="userid" select="getUser"/>
+  </resultMap>
+  <select id="queryDataView" parameterType="java.util.Map" resultMap="ResultMapView">
+    select *
+    from t_downloadrecord
+    where 1=1
+    <if test="stime != null">
+       and dltime <![CDATA[ >= ]]>  #{stime,jdbcType=TIMESTAMP} 
+    </if>
+    <if test="etime != null">
+       and dltime <![CDATA[ < ]]> #{etime,jdbcType=TIMESTAMP}
+    </if>
+    order by dltime DESC
+    <if test="page != null">
+    	limit #{page.startPos,jdbcType=INTEGER},#{page.pageSize,jdbcType=INTEGER}
+    </if>
+  </select>  
+  <select id="getUser" resultType="com.nowbin.bean.User">
+    select *
+    from t_user
+    where Userid = #{userid,jdbcType=INTEGER}
+  </select>
+</mapper>

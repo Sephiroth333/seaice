@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nowbin.dao.CountryMapper">
+  <resultMap id="BaseResultMap" type="com.nowbin.bean.Country">
+    <id column="Id" jdbcType="INTEGER" property="id" />
+    <result column="CNname" jdbcType="VARCHAR" property="cnname" />
+    <result column="ENname" jdbcType="VARCHAR" property="enname" />
+    <result column="Code2" jdbcType="VARCHAR" property="code2" />
+    <result column="Code3" jdbcType="VARCHAR" property="code3" />
+    <result column="CodeNum" jdbcType="VARCHAR" property="codenum" />
+    <result column="FullName" jdbcType="VARCHAR" property="fullname" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    Id, CNname, ENname, Code2, Code3, CodeNum, FullName
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_country
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_country
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.nowbin.bean.Country">
+    insert into t_country (Id, CNname, ENname, 
+      Code2, Code3, CodeNum, 
+      FullName)
+    values (#{id,jdbcType=INTEGER}, #{cnname,jdbcType=VARCHAR}, #{enname,jdbcType=VARCHAR}, 
+      #{code2,jdbcType=VARCHAR}, #{code3,jdbcType=VARCHAR}, #{codenum,jdbcType=VARCHAR}, 
+      #{fullname,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.nowbin.bean.Country">
+    insert into t_country
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        Id,
+      </if>
+      <if test="cnname != null">
+        CNname,
+      </if>
+      <if test="enname != null">
+        ENname,
+      </if>
+      <if test="code2 != null">
+        Code2,
+      </if>
+      <if test="code3 != null">
+        Code3,
+      </if>
+      <if test="codenum != null">
+        CodeNum,
+      </if>
+      <if test="fullname != null">
+        FullName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="cnname != null">
+        #{cnname,jdbcType=VARCHAR},
+      </if>
+      <if test="enname != null">
+        #{enname,jdbcType=VARCHAR},
+      </if>
+      <if test="code2 != null">
+        #{code2,jdbcType=VARCHAR},
+      </if>
+      <if test="code3 != null">
+        #{code3,jdbcType=VARCHAR},
+      </if>
+      <if test="codenum != null">
+        #{codenum,jdbcType=VARCHAR},
+      </if>
+      <if test="fullname != null">
+        #{fullname,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nowbin.bean.Country">
+    update t_country
+    <set>
+      <if test="cnname != null">
+        CNname = #{cnname,jdbcType=VARCHAR},
+      </if>
+      <if test="enname != null">
+        ENname = #{enname,jdbcType=VARCHAR},
+      </if>
+      <if test="code2 != null">
+        Code2 = #{code2,jdbcType=VARCHAR},
+      </if>
+      <if test="code3 != null">
+        Code3 = #{code3,jdbcType=VARCHAR},
+      </if>
+      <if test="codenum != null">
+        CodeNum = #{codenum,jdbcType=VARCHAR},
+      </if>
+      <if test="fullname != null">
+        FullName = #{fullname,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nowbin.bean.Country">
+    update t_country
+    set CNname = #{cnname,jdbcType=VARCHAR},
+      ENname = #{enname,jdbcType=VARCHAR},
+      Code2 = #{code2,jdbcType=VARCHAR},
+      Code3 = #{code3,jdbcType=VARCHAR},
+      CodeNum = #{codenum,jdbcType=VARCHAR},
+      FullName = #{fullname,jdbcType=VARCHAR}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  
+   <!-- 以下为自定义sql语句 -->
+    <select id="queryData" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_country
+    where 1=1
+    <if test="code2 != null">
+      and Code2 = #{code2,jdbcType=VARCHAR}
+    </if>
+    order by Id ASC
+  </select>  
+</mapper>

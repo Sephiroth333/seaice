@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nowbin.dao.AdminMapper">
+  <resultMap id="BaseResultMap" type="com.nowbin.bean.Admin">
+    <id column="admin_id" jdbcType="INTEGER" property="adminId" />
+    <result column="admin_name" jdbcType="VARCHAR" property="adminName" />
+    <result column="admin_pwd" jdbcType="VARCHAR" property="adminPwd" />
+    <result column="admin_phone" jdbcType="VARCHAR" property="adminPhone" />
+    <result column="admin_email" jdbcType="VARCHAR" property="adminEmail" />
+    <result column="admin_status" jdbcType="INTEGER" property="adminStatus" />
+    <result column="admin_role" jdbcType="INTEGER" property="adminRole" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.nowbin.bean.Admin">
+    <result column="admin_power" jdbcType="LONGVARCHAR" property="adminPower" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    admin_id, admin_name, admin_pwd, admin_phone, admin_email, admin_status, admin_role
+  </sql>
+  <sql id="Blob_Column_List">
+    admin_power
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_admin
+    where admin_id = #{adminId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_admin
+    where admin_id = #{adminId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.nowbin.bean.Admin">
+    insert into t_admin (admin_id, admin_name, admin_pwd, 
+      admin_phone, admin_email, admin_status, 
+      admin_role, admin_power)
+    values (#{adminId,jdbcType=INTEGER}, #{adminName,jdbcType=VARCHAR}, #{adminPwd,jdbcType=VARCHAR}, 
+      #{adminPhone,jdbcType=VARCHAR}, #{adminEmail,jdbcType=VARCHAR}, #{adminStatus,jdbcType=INTEGER}, 
+      #{adminRole,jdbcType=INTEGER}, #{adminPower,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.nowbin.bean.Admin">
+    insert into t_admin
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="adminId != null">
+        admin_id,
+      </if>
+      <if test="adminName != null">
+        admin_name,
+      </if>
+      <if test="adminPwd != null">
+        admin_pwd,
+      </if>
+      <if test="adminPhone != null">
+        admin_phone,
+      </if>
+      <if test="adminEmail != null">
+        admin_email,
+      </if>
+      <if test="adminStatus != null">
+        admin_status,
+      </if>
+      <if test="adminRole != null">
+        admin_role,
+      </if>
+      <if test="adminPower != null">
+        admin_power,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="adminId != null">
+        #{adminId,jdbcType=INTEGER},
+      </if>
+      <if test="adminName != null">
+        #{adminName,jdbcType=VARCHAR},
+      </if>
+      <if test="adminPwd != null">
+        #{adminPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="adminPhone != null">
+        #{adminPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="adminEmail != null">
+        #{adminEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="adminStatus != null">
+        #{adminStatus,jdbcType=INTEGER},
+      </if>
+      <if test="adminRole != null">
+        #{adminRole,jdbcType=INTEGER},
+      </if>
+      <if test="adminPower != null">
+        #{adminPower,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nowbin.bean.Admin">
+    update t_admin
+    <set>
+      <if test="adminName != null">
+        admin_name = #{adminName,jdbcType=VARCHAR},
+      </if>
+      <if test="adminPwd != null">
+        admin_pwd = #{adminPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="adminPhone != null">
+        admin_phone = #{adminPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="adminEmail != null">
+        admin_email = #{adminEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="adminStatus != null">
+        admin_status = #{adminStatus,jdbcType=INTEGER},
+      </if>
+      <if test="adminRole != null">
+        admin_role = #{adminRole,jdbcType=INTEGER},
+      </if>
+      <if test="adminPower != null">
+        admin_power = #{adminPower,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where admin_id = #{adminId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.nowbin.bean.Admin">
+    update t_admin
+    set admin_name = #{adminName,jdbcType=VARCHAR},
+      admin_pwd = #{adminPwd,jdbcType=VARCHAR},
+      admin_phone = #{adminPhone,jdbcType=VARCHAR},
+      admin_email = #{adminEmail,jdbcType=VARCHAR},
+      admin_status = #{adminStatus,jdbcType=INTEGER},
+      admin_role = #{adminRole,jdbcType=INTEGER},
+      admin_power = #{adminPower,jdbcType=LONGVARCHAR}
+    where admin_id = #{adminId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nowbin.bean.Admin">
+    update t_admin
+    set admin_name = #{adminName,jdbcType=VARCHAR},
+      admin_pwd = #{adminPwd,jdbcType=VARCHAR},
+      admin_phone = #{adminPhone,jdbcType=VARCHAR},
+      admin_email = #{adminEmail,jdbcType=VARCHAR},
+      admin_status = #{adminStatus,jdbcType=INTEGER},
+      admin_role = #{adminRole,jdbcType=INTEGER}
+    where admin_id = #{adminId,jdbcType=INTEGER}
+  </update>
+  
+<!-- 以下为自定义sql语句 -->
+  <select id="userLogin" parameterType="com.nowbin.bean.Admin" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_admin
+    where admin_name = #{adminName,jdbcType=VARCHAR} and admin_pwd = #{adminPwd,jdbcType=VARCHAR}
+  </select>
+  <select id="userLoginbyEmail" parameterType="com.nowbin.bean.Admin" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_admin
+    where admin_email = #{adminEmail,jdbcType=VARCHAR} and admin_pwd = #{adminPwd,jdbcType=VARCHAR}
+  </select>
+  <select id="getCount" parameterType="java.util.Map" resultType="long">
+    select count(*)
+    from t_admin
+    where 1=1 
+    <if test="userid != null">
+       and admin_id = #{userid,jdbcType=INTEGER} 
+    </if>
+    <if test="usertype != null">
+       and admin_role = #{usertype,jdbcType=INTEGER} 
+    </if>
+    <if test="userstatus != null">
+       and admin_status = #{userstatus,jdbcType=INTEGER} 
+    </if> 
+  </select>  
+  <select id="queryData" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_admin
+    where 1=1
+    <if test="userid != null">
+       and admin_id = #{userid,jdbcType=INTEGER} 
+    </if>
+    <if test="usertype != null">
+       and admin_role = #{usertype,jdbcType=INTEGER} 
+    </if>
+    <if test="userstatus != null">
+       and admin_status = #{userstatus,jdbcType=INTEGER} 
+    </if>
+    order by admin_id
+    <if test="page != null">
+    	limit #{page.startPos,jdbcType=INTEGER},#{page.pageSize,jdbcType=INTEGER}
+    </if>
+  </select>
+  <select id="checkName" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_admin
+    where 1=1
+    <if test="loginname != null">
+       and admin_name = #{loginname,jdbcType=VARCHAR}
+    </if>
+    <if test="loginemail != null">
+       and admin_email = #{loginemail,jdbcType=VARCHAR}
+    </if>
+    <if test="userid != null">
+       and admin_id <![CDATA[!= ]]> #{userid,jdbcType=INTEGER}
+    </if>
+  </select>  
+</mapper>
